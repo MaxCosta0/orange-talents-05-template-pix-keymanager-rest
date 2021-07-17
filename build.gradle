@@ -5,6 +5,7 @@ plugins {
     id("io.micronaut.application") version "1.5.3"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.4.32"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.4.32"
+    id("com.google.protobuf") version "0.8.15"
 }
 
 version = "0.1"
@@ -27,7 +28,9 @@ dependencies {
     kapt("io.micronaut.data:micronaut-data-processor")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
+    implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    implementation("io.micronaut.grpc:micronaut-grpc-client-runtime")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("javax.annotation:javax.annotation-api")
@@ -43,10 +46,6 @@ dependencies {
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     testImplementation("org.mockito:mockito-core")
-
-    implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator:3.0.0")
-
-    implementation("org.hibernate:hibernate-validator:6.1.6.Final")
 
 }
 
@@ -71,4 +70,22 @@ tasks {
     }
 
 
+}
+sourceSets {
+    main {
+        java {
+            srcDirs("build/generated/source/proto/main/grpc")
+            srcDirs("build/generated/source/proto/main/java")
+        }
+    }
+}
+
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:3.17.2" }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.38.0" }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
 }

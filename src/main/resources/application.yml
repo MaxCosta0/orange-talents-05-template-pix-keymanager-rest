@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: keyManagerRest
+    name: register
 datasources:
   default:
     url: jdbc:postgresql://localhost:5432/postgres
