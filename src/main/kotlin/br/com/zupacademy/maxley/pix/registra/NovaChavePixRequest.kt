@@ -11,16 +11,16 @@ import javax.validation.constraints.Size
 
 @Introspected
 data class NovaChavePixRequest(
-    @field:NotNull val tipoDeChave: TipoDeChave,
-    @field:NotBlank @field:Size(max = 77) val valorDaChave: String,
-    @field:NotNull val tipoDeConta: TipoDeConta
+    @field:NotNull val tipoDeChave: TipoDeChave?,
+    @field:Size(max = 77) val valorDaChave: String?,
+    @field:NotNull val tipoDeConta: TipoDeConta?
 ) {
     fun toRegistraChavePixRequest(clientId: UUID): RegistraChavePixRequest? {
         return RegistraChavePixRequest.newBuilder()
             .setClientId(clientId.toString())
-            .setTipoDeChave(tipoDeChave)
-            .setChave(valorDaChave)
-            .setTipoDeConta(tipoDeConta)
+            .setTipoDeChave(tipoDeChave ?: TipoDeChave.UNKNOWN_TIPO_CHAVE)
+            .setChave(valorDaChave ?: "")
+            .setTipoDeConta(tipoDeConta ?: TipoDeConta.UNKNOWN_TIPO_CONTA)
             .build()
     }
 }

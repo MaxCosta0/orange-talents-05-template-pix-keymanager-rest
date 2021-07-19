@@ -6,22 +6,31 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
+import io.micronaut.validation.Validated
+import org.slf4j.LoggerFactory
 import java.util.*
+import javax.validation.Valid
 
+@Validated
 @Controller("/api/clientes")
 class RegistraChavePixController(
  private val registraChavePixClient: KeyManagerServiceGrpc.KeyManagerServiceBlockingStub
 ) {
-//    val logger: Logger = LoggerFactory.getLogger(this::class.java)
+
+    val logger = LoggerFactory.getLogger(this::class.java)
 
     @Post("/{clientId}/pix")
     fun registra(
         @QueryValue clientId: UUID,
-        @Body request: NovaChavePixRequest
-    ) : HttpResponse<Any> {
+        @Valid @Body request: NovaChavePixRequest
+    ) : HttpResponse<Any>? {
+
+        logger.info("Cadastrando nova chave \n$request")
 
         val response = registraChavePixClient.registra(request.toRegistraChavePixRequest(clientId))
 
-        return HttpResponse.ok(request)
+        return HttpResponse.created(
+            HttpResponse.uri("/api/clientes/$clientId/pix/${response.pixId}")
+        )
     }
 }
