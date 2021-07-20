@@ -1,5 +1,6 @@
 package br.com.zupacademy.maxley.shared.grpc
 
+import br.com.zupacademy.maxley.KeyManagerRemoveGrpcServiceGrpc
 import br.com.zupacademy.maxley.KeyManagerServiceGrpc
 import io.grpc.ManagedChannel
 import io.micronaut.context.annotation.Factory
@@ -14,5 +15,12 @@ class KeyManagerGrpcFactory {
         @GrpcChannel("keymanager") channel: ManagedChannel
     ): KeyManagerServiceGrpc.KeyManagerServiceBlockingStub? {
         return KeyManagerServiceGrpc.newBlockingStub(channel)
+    }
+
+    @Singleton
+    fun removeChave(
+        @GrpcChannel("keymanager") channel: ManagedChannel
+    ): KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceBlockingStub? {
+        return KeyManagerRemoveGrpcServiceGrpc.newBlockingStub(channel)
     }
 }
