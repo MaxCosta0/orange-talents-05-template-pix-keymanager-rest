@@ -1,6 +1,7 @@
 package br.com.zupacademy.maxley.pix.consulta
 
 import br.com.zupacademy.maxley.*
+import br.com.zupacademy.maxley.pix.TipoChavePix
 import br.com.zupacademy.maxley.pix.TipoContaBancaria
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller

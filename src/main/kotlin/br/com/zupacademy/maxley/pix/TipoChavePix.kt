@@ -1,4 +1,4 @@
-package br.com.zupacademy.maxley.pix.consulta
+package br.com.zupacademy.maxley.pix
 
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator
 import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator

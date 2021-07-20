@@ -1,5 +1,6 @@
 package br.com.zupacademy.maxley.pix.consulta
 
+import br.com.zupacademy.maxley.pix.TipoChavePix
 import br.com.zupacademy.maxley.pix.TipoContaBancaria
 
 data class ConsultaChavePixRestResponse(

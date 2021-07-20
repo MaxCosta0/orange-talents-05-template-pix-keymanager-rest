@@ -16,7 +16,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.BDDMockito
 import org.mockito.Mockito
 import java.util.*
 import javax.inject.Inject
@@ -47,7 +46,7 @@ internal class RemoveChavePixControllerTest {
     @Test
     fun `deve remover chave pix`() {
         //Cenario
-        BDDMockito.`when`(grpcClient.remove(removeChavePixRequest()))
+        Mockito.`when`(grpcClient.remove(removeChavePixRequest()))
             .thenReturn(removeChavePixResponse())
 
         //Ação
@@ -63,7 +62,7 @@ internal class RemoveChavePixControllerTest {
     @Test
     fun `nao deve remover chave pix quando chave inexistente`() {
         //Cenario
-        BDDMockito.`when`(grpcClient.remove(removeChavePixRequest()))
+        Mockito.`when`(grpcClient.remove(Mockito.any()))
             .thenThrow(Status.NOT_FOUND
                 .withDescription("Chave pix nao encontrada")
                 .asRuntimeException()
@@ -85,12 +84,14 @@ internal class RemoveChavePixControllerTest {
     }
 
     @Factory
-    @Replaces(factory = KeyManagerGrpcFactory::class)
-    class KeyManagerMockfactory {
+    class MockGrpcFactory(){
         @Singleton
-        fun removeGrpcClient(): KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceBlockingStub? {
-            return Mockito.mock(KeyManagerRemoveGrpcServiceGrpc
-                .KeyManagerRemoveGrpcServiceBlockingStub::class.java)
+        @Replaces(
+            value = KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceBlockingStub::class,
+            factory = KeyManagerGrpcFactory::class
+        )
+        fun removeClient(): KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceBlockingStub {
+            return Mockito.mock(KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceBlockingStub::class.java)
         }
     }
 

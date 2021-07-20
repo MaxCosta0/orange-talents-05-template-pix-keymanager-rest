@@ -4,32 +4,19 @@ import br.com.zupacademy.maxley.KeyManagerConsultaGrpcServiceGrpc
 import br.com.zupacademy.maxley.KeyManagerRemoveGrpcServiceGrpc
 import br.com.zupacademy.maxley.KeyManagerServiceGrpc
 import io.grpc.ManagedChannel
-import io.grpc.stub.AbstractBlockingStub
 import io.micronaut.context.annotation.Factory
 import io.micronaut.grpc.annotation.GrpcChannel
 import javax.inject.Singleton
 
 @Factory
-class KeyManagerGrpcFactory {
+class KeyManagerGrpcFactory(@GrpcChannel("keymanager") val channel: ManagedChannel) {
 
     @Singleton
-    fun registraChave(
-        @GrpcChannel("keymanager") channel: ManagedChannel
-    ): KeyManagerServiceGrpc.KeyManagerServiceBlockingStub? {
-        return KeyManagerServiceGrpc.newBlockingStub(channel)
-    }
+    fun registraChave() = KeyManagerServiceGrpc.newBlockingStub(channel)
 
     @Singleton
-    fun removeChave(
-        @GrpcChannel("keymanager") channel: ManagedChannel
-    ): KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceBlockingStub? {
-        return KeyManagerRemoveGrpcServiceGrpc.newBlockingStub(channel)
-    }
+    fun removeChave() = KeyManagerRemoveGrpcServiceGrpc.newBlockingStub(channel)
 
     @Singleton
-    fun consultaChave(
-        @GrpcChannel("keymanager") channel: ManagedChannel
-    ): KeyManagerConsultaGrpcServiceGrpc.KeyManagerConsultaGrpcServiceBlockingStub? {
-        return KeyManagerConsultaGrpcServiceGrpc.newBlockingStub(channel)
-    }
+    fun consultaChave() = KeyManagerConsultaGrpcServiceGrpc.newBlockingStub(channel)
 }
