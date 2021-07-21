@@ -3,8 +3,10 @@ package br.com.zupacademy.maxley.pix.remove
 import br.com.zupacademy.maxley.KeyManagerRemoveGrpcServiceGrpc
 import br.com.zupacademy.maxley.RemoveChavePixRequest
 import br.com.zupacademy.maxley.RemoveChavePixResponse
+import br.com.zupacademy.maxley.pix.KeyManagerGrpcFactoryParaTest
 import br.com.zupacademy.maxley.shared.grpc.KeyManagerGrpcFactory
 import io.grpc.Status
+import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Replaces
 import io.micronaut.http.HttpRequest
@@ -62,7 +64,7 @@ internal class RemoveChavePixControllerTest {
     @Test
     fun `nao deve remover chave pix quando chave inexistente`() {
         //Cenario
-        Mockito.`when`(grpcClient.remove(Mockito.any()))
+        Mockito.`when`(grpcClient.remove(removeChavePixRequest()))
             .thenThrow(Status.NOT_FOUND
                 .withDescription("Chave pix nao encontrada")
                 .asRuntimeException()
@@ -84,12 +86,9 @@ internal class RemoveChavePixControllerTest {
     }
 
     @Factory
+    @Replaces(factory = KeyManagerGrpcFactoryParaTest::class)
     class MockGrpcFactory(){
         @Singleton
-        @Replaces(
-            value = KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceBlockingStub::class,
-            factory = KeyManagerGrpcFactory::class
-        )
         fun removeClient(): KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceBlockingStub {
             return Mockito.mock(KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceBlockingStub::class.java)
         }
