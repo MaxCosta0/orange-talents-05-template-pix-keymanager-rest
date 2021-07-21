@@ -1,6 +1,7 @@
 package br.com.zupacademy.maxley.shared.grpc
 
 import br.com.zupacademy.maxley.KeyManagerConsultaGrpcServiceGrpc
+import br.com.zupacademy.maxley.KeyManagerListaGrpcSErviceGrpc
 import br.com.zupacademy.maxley.KeyManagerRemoveGrpcServiceGrpc
 import br.com.zupacademy.maxley.KeyManagerServiceGrpc
 import io.grpc.ManagedChannel
@@ -19,4 +20,7 @@ class KeyManagerGrpcFactory(@GrpcChannel("keymanager") val channel: ManagedChann
 
     @Singleton
     fun consultaChave() = KeyManagerConsultaGrpcServiceGrpc.newBlockingStub(channel)
+
+    @Singleton
+    fun listaChaves() = KeyManagerListaGrpcSErviceGrpc.newBlockingStub(channel)
 }
