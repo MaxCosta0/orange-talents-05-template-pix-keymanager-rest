@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orange-stack-pix-keymanager-rest-configmap
+data:
+  KEYMANAGER_GRPC_HOST: "{{ .Values.application.KEYMANAGER_GRPC_HOST }}"
+  KEYMANAGER_GRPC_PORT: "{{ .Values.application.KEYMANAGER_GRPC_PORT }}"

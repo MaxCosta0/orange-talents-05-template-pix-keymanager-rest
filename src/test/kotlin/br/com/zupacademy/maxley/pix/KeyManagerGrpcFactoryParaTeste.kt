@@ -10,21 +10,22 @@ import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Replaces
 import io.micronaut.grpc.annotation.GrpcChannel
+import org.mockito.Mockito
 import javax.inject.Singleton
 
 @Factory
 @Replaces(factory = KeyManagerGrpcFactory::class)
-class KeyManagerGrpcFactoryParaTest(@GrpcChannel("keymanager") val channel: ManagedChannel) {
+class KeyManagerGrpcFactoryParaTeste(@GrpcChannel("localhost:50051") val channel: ManagedChannel) {
 
     @Singleton
-    fun registraChave() = KeyManagerServiceGrpc.newBlockingStub(channel)
+    fun registraChave() = Mockito.mock(KeyManagerServiceGrpc.newBlockingStub(channel)::class.java)
 
     @Singleton
-    fun removeChave() = KeyManagerRemoveGrpcServiceGrpc.newBlockingStub(channel)
+    fun removeChave() = Mockito.mock(KeyManagerRemoveGrpcServiceGrpc.newBlockingStub(channel)::class.java)
 
     @Singleton
-    fun consultaChave() = KeyManagerConsultaGrpcServiceGrpc.newBlockingStub(channel)
+    fun consultaChave() = Mockito.mock(KeyManagerConsultaGrpcServiceGrpc.newBlockingStub(channel)::class.java)
 
     @Singleton
-    fun listaChaves() = KeyManagerListaGrpcSErviceGrpc.newBlockingStub(channel)
+    fun listaChaves() = Mockito.mock(KeyManagerListaGrpcSErviceGrpc.newBlockingStub(channel)::class.java)
 }

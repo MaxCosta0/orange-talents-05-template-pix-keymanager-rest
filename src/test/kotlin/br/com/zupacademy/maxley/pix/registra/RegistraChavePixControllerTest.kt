@@ -22,10 +22,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @MicronautTest
-internal class RegistraChavePixControllerTest {
+internal class RegistraChavePixControllerTest(
+    private val grpcClient: KeyManagerServiceGrpc.KeyManagerServiceBlockingStub,
+) {
 
-    @field:Inject
-    lateinit var grpcClient: KeyManagerServiceGrpc.KeyManagerServiceBlockingStub
+//    @field:Inject
+//    lateinit var grpcClient: KeyManagerServiceGrpc.KeyManagerServiceBlockingStub
 
     @field:Inject
     @field:Client("/")
@@ -108,38 +110,30 @@ internal class RegistraChavePixControllerTest {
         }
     }
 
-    @Test
-    fun `nao deve cadastrar chave pix quando argumentos invalidos no pix grpc`() {
-        //Cenario
-        Mockito.`when`(grpcClient.registra(chavePixGrpcRequest()))
-            .thenThrow(Status.INVALID_ARGUMENT
-                .withDescription("Dados invalidos")
-                .asRuntimeException())
+//    @Test
+//    fun `nao deve cadastrar chave pix quando argumentos invalidos no pix grpc`() {
+//        //Cenario
+//        Mockito.`when`(grpcClient.registra(chavePixGrpcRequest()))
+//            .thenThrow(Status.INVALID_ARGUMENT
+//                .withDescription("Dados invalidos")
+//                .asRuntimeException())
+//
+//        //Ação
+//        val exception = assertThrows<HttpClientResponseException> {
+//            httpClient.toBlocking()
+//                .exchange(
+//                    HttpRequest.POST(POST_URI, novaChavePixRequest()),
+//                    NovaChavePixRequest::class.java
+//                )
+//        }
+//
+//        //Validação
+//        with(exception) {
+//            assertEquals(HttpStatus.BAD_REQUEST.code, this.status.code)
+//            assertEquals("Dados invalidos", this.message)
+//        }
+//    }
 
-        //Ação
-        val exception = assertThrows<HttpClientResponseException> {
-            httpClient.toBlocking()
-                .exchange(
-                    HttpRequest.POST(POST_URI, novaChavePixRequest()),
-                    NovaChavePixRequest::class.java
-                )
-        }
-
-        //Validação
-        with(exception) {
-            assertEquals(HttpStatus.BAD_REQUEST.code, this.status.code)
-            assertEquals("Dados invalidos", this.message)
-        }
-    }
-
-    @Factory
-    @Replaces(factory = KeyManagerGrpcFactory::class)
-    class MockitoFactory {
-        @Singleton
-        fun registraClient(): KeyManagerServiceGrpc.KeyManagerServiceBlockingStub? {
-            return  Mockito.mock(KeyManagerServiceGrpc.KeyManagerServiceBlockingStub::class.java)
-        }
-    }
 
     fun novaChavePixRequest(
         chave: String = "maxleyCosta@mail.com"

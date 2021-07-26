@@ -1,10 +1,7 @@
 package br.com.zupacademy.maxley.pix.lista
 
 import br.com.zupacademy.maxley.*
-import br.com.zupacademy.maxley.shared.grpc.KeyManagerGrpcFactory
 import com.google.protobuf.Timestamp
-import io.micronaut.context.annotation.Factory
-import io.micronaut.context.annotation.Replaces
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
@@ -15,13 +12,14 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @MicronautTest
-internal class ListaChavesPixControllerTest() {
+internal class ListaChavesPixControllerTest(
+    private val grpcClient: KeyManagerListaGrpcSErviceGrpc.KeyManagerListaGrpcSErviceBlockingStub
+) {
 
-    @field:Inject
-    lateinit var grpcClient: KeyManagerListaGrpcSErviceGrpc.KeyManagerListaGrpcSErviceBlockingStub
+//    @field:Inject
+//    lateinit var grpcClient: KeyManagerListaGrpcSErviceGrpc.KeyManagerListaGrpcSErviceBlockingStub
 
     @field:Inject
     @field:Client("/")
@@ -98,23 +96,12 @@ internal class ListaChavesPixControllerTest() {
             ).build()
     }
 
-//    private fun listaChavePixRestResponse(): List<ChavePixRestResponse> {
-//        return listOf(
-//            ChavePixRestResponse(
-//                pixId = PIX_ID,
-//                clientId = CLIENT_ID,
-//                valorDaChave = CHAVE_PIX_RANDOM,
-//                tipoDaConta = TipoContaBancaria.CONTA_CORRENTE,
-//                criadaEm = LocalDateTime.now()
-//        ))
+//    @Factory
+//    @Replaces(factory = KeyManagerGrpcFactory::class)
+//    class MockitoListaFactory{
+//        @Singleton
+//        fun listaChaves(): KeyManagerListaGrpcSErviceGrpc.KeyManagerListaGrpcSErviceBlockingStub {
+//            return Mockito.mock(KeyManagerListaGrpcSErviceGrpc.KeyManagerListaGrpcSErviceBlockingStub::class.java)
+//        }
 //    }
-
-    @Factory
-    @Replaces(factory = KeyManagerGrpcFactory::class)
-    class MockitoListaFactory{
-        @Singleton
-        fun listaChaves(): KeyManagerListaGrpcSErviceGrpc.KeyManagerListaGrpcSErviceBlockingStub {
-            return Mockito.mock(KeyManagerListaGrpcSErviceGrpc.KeyManagerListaGrpcSErviceBlockingStub::class.java)
-        }
-    }
 }

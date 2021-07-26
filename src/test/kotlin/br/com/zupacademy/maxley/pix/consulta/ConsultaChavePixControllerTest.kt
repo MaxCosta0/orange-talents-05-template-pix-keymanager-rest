@@ -1,18 +1,12 @@
 package br.com.zupacademy.maxley.pix.consulta
 
 import br.com.zupacademy.maxley.*
-import br.com.zupacademy.maxley.pix.remove.RemoveChavePixControllerTest
-import br.com.zupacademy.maxley.shared.grpc.KeyManagerGrpcFactory
 import io.grpc.Status
-import io.micronaut.context.annotation.Factory
-import io.micronaut.context.annotation.Replaces
-import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -20,13 +14,14 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @MicronautTest
-internal class ConsultaChavePixControllerTest {
+internal class ConsultaChavePixControllerTest(
+    private val grpcClient: KeyManagerConsultaGrpcServiceGrpc.KeyManagerConsultaGrpcServiceBlockingStub,
+) {
 
-    @field:Inject
-    lateinit var grpcClient: KeyManagerConsultaGrpcServiceGrpc.KeyManagerConsultaGrpcServiceBlockingStub
+//    @field:Inject
+//    lateinit var grpcClient: KeyManagerConsultaGrpcServiceGrpc.KeyManagerConsultaGrpcServiceBlockingStub
 
     @field:Inject
     @field:Client("/")
@@ -90,17 +85,17 @@ internal class ConsultaChavePixControllerTest {
         }
     }
 
-    @Factory
-    @Replaces(factory = KeyManagerGrpcFactory::class)
-    class MockitoConsultaFactory {
-        @Singleton
-        fun consultaClient(): KeyManagerConsultaGrpcServiceGrpc.KeyManagerConsultaGrpcServiceBlockingStub? {
-            return Mockito.mock(
-                KeyManagerConsultaGrpcServiceGrpc.
-                KeyManagerConsultaGrpcServiceBlockingStub::class.java
-            )
-        }
-    }
+//    @Factory
+//    @Replaces(factory = KeyManagerGrpcFactory::class)
+//    class MockitoConsultaFactory {
+//        @Singleton
+//        fun consultaClient(): KeyManagerConsultaGrpcServiceGrpc.KeyManagerConsultaGrpcServiceBlockingStub? {
+//            return Mockito.mock(
+//                KeyManagerConsultaGrpcServiceGrpc.
+//                KeyManagerConsultaGrpcServiceBlockingStub::class.java
+//            )
+//        }
+//    }
 
     fun consultaChavePixRequest() = ConsultaChavePixRequest.newBuilder()
         .setPixId(ConsultaChavePixRequest.FiltroPorPixId.newBuilder()
