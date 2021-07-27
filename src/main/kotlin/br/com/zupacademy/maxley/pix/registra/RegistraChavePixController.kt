@@ -27,7 +27,7 @@ class RegistraChavePixController(
 
         logger.info("Cadastrando nova chave \n$request")
 
-        val response = registraChavePixClient.registra(request.toRegistraChavePixRequest(clientId))
+        val response = registraChavePixClient.registra(request.toRegistraChavePixGrpcRequest(clientId))
 
         return HttpResponse.created(
             HttpResponse.uri("/api/clientes/$clientId/pix/${response.pixId}")

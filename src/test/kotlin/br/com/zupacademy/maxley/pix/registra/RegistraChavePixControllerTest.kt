@@ -1,17 +1,14 @@
 package br.com.zupacademy.maxley.pix.registra
 
 import br.com.zupacademy.maxley.*
-import br.com.zupacademy.maxley.shared.grpc.KeyManagerGrpcFactory
+import br.com.zupacademy.maxley.pix.TipoChavePix
+import br.com.zupacademy.maxley.pix.TipoContaBancaria
 import io.grpc.Status
-import io.micronaut.context.annotation.Bean
-import io.micronaut.context.annotation.Factory
-import io.micronaut.context.annotation.Replaces
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
-import io.micronaut.test.annotation.TransactionMode
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -19,7 +16,6 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @MicronautTest
 internal class RegistraChavePixControllerTest(
@@ -135,20 +131,19 @@ internal class RegistraChavePixControllerTest(
 //    }
 
 
-    fun novaChavePixRequest(
-        chave: String = "maxleyCosta@mail.com"
-    )  = NovaChavePixRequest(
-            tipoDeChave = TipoDeChave.EMAIL,
+    fun novaChavePixRequest(chave: String = "maxleyCosta@mail.com") =
+        NovaChavePixRequest(
+            tipoChavePix = TipoChavePix.EMAIL,
             valorDaChave = chave,
-            tipoDeConta = TipoDeConta.CONTA_CORRENTE
+            tipoContaBancaria = TipoContaBancaria.CONTA_CORRENTE
         )
 
     fun chavePixGrpcRequest() = with(novaChavePixRequest()){
                 RegistraChavePixRequest.newBuilder()
                     .setClientId(CLIENT_ID_CONHECIDO)
-                    .setTipoDeChave(tipoDeChave)
+                    .setTipoDeChave(TipoDeChave.valueOf(tipoChavePix!!.name))
                     .setChave(valorDaChave)
-                    .setTipoDeConta(tipoDeConta)
+                    .setTipoDeConta(TipoDeConta.valueOf(tipoContaBancaria!!.name))
                     .build()
     }
 
