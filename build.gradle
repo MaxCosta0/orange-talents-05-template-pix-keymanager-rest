@@ -44,6 +44,9 @@ dependencies {
 
     implementation("org.hibernate:hibernate-validator:6.1.6.Final")
 
+    //PARA O HEALTH CHECK
+    implementation("io.micronaut:micronaut-management")
+
 
 }
 
